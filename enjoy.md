@@ -123,3 +123,77 @@
 	export DYLD_LIBRARY_PATH=“$MAGICK_HOME/lib/"
 	
 
+================================================
+**Ruby 2.1.1** 与 **Rails 4.1.4** 的安装
+
+1、首先安装RVM 
+
+	curl -L https://get.rvm.io | bash -s stable
+	
+执行后会通过homebrew安装依赖包，最后成功安装RVM
+
+2、重新打开终端
+
+3、安装Ruby 2.1.1
+
+	rvm install 2.1.1
+	
+4、设置系统默认ruby版本为2.1.1
+
+	rvm 2.1.1 —default
+	
+5、安装Rails 4.1.4
+
+	gem install rails -v 4.1.4
+
+
+=================================
+下载**discourse**源码，并安装所需gem
+
+1、cd到workspace文件夹(当前处在&HOME位置)
+
+	cd workspace
+	
+2、克隆
+
+	git clone https://github.com/discourse/discourse.git
+	
+   结束后，会在workspace文件下看到discourse文件夹
+   
+3、进入discourse文件夹
+
+	cd discourse
+	
+4、安装所需gem
+
+	bundle install
+	
+   这个如果网速不好的话，要安装了好长时间。
+
+=====================================
+**数据库创建及迁移**
+
+	rake db:create db:migrate
+
+=====================================
+**启动服务器**
+
+	rails s
+
+======================================
+**让外网访问**
+
+1、进入路由器设置页面，找到转发规则，进行设置
+
+	服务端口：80
+	
+	内部端口：3000
+	
+	IP地址：192.168.1.107（局域网分配的ip）
+	
+	协议：ALL
+	
+2、在浏览器输入公网IP地址即可访问
+
+
+
