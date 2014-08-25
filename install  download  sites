@@ -17,3 +17,19 @@ libxml2
 http://xmlsoft.org/downloads.html
 https://github.com/GNOME/libxml2.git
 
+
+===========================================
+Install Docker
+wget -qO- https://get.docker.io/ | sh
+
+Install Discourse
+Create a /var/discourse folder, clone the Official Discourse Docker Image into it, and make a copy of the config file as app.yml:
+
+mkdir /var/discourse
+git clone https://github.com/discourse/discourse_docker.git /var/discourse
+cd /var/discourse
+cp samples/standalone.yml containers/app.yml
+
+Edit Discourse Configuration
+Edit the Discourse configuration at app.yml:
+
