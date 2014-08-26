@@ -33,3 +33,4 @@ cp samples/standalone.yml containers/app.yml
 Edit Discourse Configuration
 Edit the Discourse configuration at app.yml:
 
+http://www.postgresql.org/docs/9.4/static/admin.html
