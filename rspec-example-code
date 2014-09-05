@@ -32,3 +32,87 @@ end
 before(:each) do
   @widget.reload
 end
+
+============================================================================================================
+Directory Structure
+    Model specs reside in the spec/models directory
+    Controller specs reside in the spec/controllers directory
+    Request specs reside in the spec/requests directory
+    Feature specs reside in the spec/features directory
+    View specs reside in the spec/views directory
+    Helper specs reside in the spec/helpers directory
+    Mailer specs reside in the spec/mailers directory
+    Routing specs reside in the spec/routing directory
+
+
+    Model specs: type: :model
+    Controller specs: type: :controller
+    Request specs: type: :request
+    Feature specs: type: :feature
+    View specs: type: :view
+    Helper specs: type: :helper
+    Mailer specs: type: :mailer
+    Routing specs: type: :routing
+
+
+=====================================================================================================================
+Standard Rails specs must specify the `:type` metadata 
+
+require "rails_helper"
+
+RSpec.describe WidgetsController, :type => :controller do
+  it "responds successfully" do
+    get :index
+    expect(response.status).to eq(200)
+  end
+end
+
+Non-rails related specs do not require `:type` metadata by default 
+
+require "spec_helper"
+
+Entry = Struct.new(:description, :us_cents)
+
+RSpec.describe Entry do
+  it "has a description" do
+    is_expected.to respond_to(:description)
+  end
+end
+
+Inferring spec type from the file location adds the appropriate metadata 
+
+require "rails_helper"
+
+RSpec.configure do |config|
+  config.infer_spec_type_from_file_location!
+end
+
+RSpec.describe WidgetsController do
+  it "responds successfully" do
+    get :index
+    expect(response.status).to eq(200)
+  end
+end
+
+Specs in canonical directories can override their inferred types 
+
+require "rails_helper"
+
+Rails.application.routes.draw do
+  get "/example" => redirect("http://example.com")
+end
+
+RSpec.configure do |config|
+  config.infer_spec_type_from_file_location!
+end
+
+# Due to limitations in the Rails routing test framework, routes that
+# perform redirects must actually be tested via request specs
+RSpec.describe "/example", :type => :request do
+  it "redirects to example.com" do
+    get "/example"
+    expect(response).to redirect_to("http://example.com")
+  end
+end
+
+=========================================================================================================
