@@ -1,0 +1,92 @@
+require "rails_helper"
+
+describe Post do
+  context "with 2 or more comments" do
+    it "orders them in reverse chronologically" do
+      post = Post.create!
+      comment1 = post.comments.create!(:body => "first comment")
+      comment2 = post.comments.create!(:body => "second comment")
+      expect(post.reload.comments).to eq([comment2, comment1])
+    end
+  end
+end
+
+======================================================================================
+#run in transactions (default) 
+require "rails_helper"
+
+describe Widget do
+  it "has none to begin with" do
+    expect(Widget.count).to eq 0
+  end
+
+  it "has one after adding one" do
+    Widget.create
+    expect(Widget.count).to eq 1
+  end
+
+  it "has none after one was created in a previous example" do
+    expect(Widget.count).to eq 0
+  end
+end
+
+=========================================================================================
+#run in transactions (explicit) 
+require "rails_helper"
+
+RSpec.configure do |c|
+  c.use_transactional_examples = true
+end
+
+describe Widget do
+  it "has none to begin with" do
+    expect(Widget.count).to eq 0
+  end
+
+  it "has one after adding one" do
+    Widget.create
+    expect(Widget.count).to eq 1
+  end
+
+  it "has none after one was created in a previous example" do
+    expect(Widget.count).to eq 0
+  end
+end
+===========================================================================================
+#disable transactions (explicit) 
+require "rails_helper"
+
+RSpec.configure do |c|
+  c.use_transactional_examples = false
+  c.order = "defined"
+end
+
+describe Widget do
+  it "has none to begin with" do
+    expect(Widget.count).to eq 0
+  end
+
+  it "has one after adding one" do
+    Widget.create
+    expect(Widget.count).to eq 1
+  end
+
+  it "has one after one was created in a previous example" do
+    expect(Widget.count).to eq 1
+  end
+
+  after(:all) { Widget.destroy_all }
+end
+===============================================================================================
+#run in transactions with fixture 
+require "rails_helper"
+
+describe Thing do
+  fixtures :things
+  it "fixture method defined" do
+    things(:one)
+  end
+end
+#Given a file named "spec/fixtures/things.yml" with: 
+one:
+  name: MyString
