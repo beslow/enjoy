@@ -1,0 +1,34 @@
+Data created in before(:each) are rolled back
+
+describe Widget do
+  before(:each) do
+    @widget = Widget.create
+  end
+
+  it "does something" do
+    expect(@widget).to do_something
+  end
+
+  it "does something else" do
+    expect(@widget).to do_something_else
+  end
+end
+
+=========================================================================================================
+Data created in before(:all) are not rolled back
+1、Be sure to clean up any data in an after(:all) hook:
+before(:all) do
+  @widget = Widget.create!
+end
+
+after(:all) do
+  @widget.destroy
+end
+2、Reload the object in a before(:each) hook.
+before(:all) do
+  @widget = Widget.create!
+end
+
+before(:each) do
+  @widget.reload
+end
